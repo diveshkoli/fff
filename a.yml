@@ -1,0 +1,52 @@
+--- 
+hosts: sanjay
+user: ansible
+becomes: yes
+vars: 
+  packagename: git
+  tasks:
+    - name:  install java
+      yum:
+        name:  java
+        state: latest    
+    - name:  install ocker 
+      yum: 
+        name: python3-pip
+        state: latest
+    - name: install python
+      pip:
+        name: docker
+        state: latest
+    - name:  mysql
+      docker_container:
+        name: mysql
+        image:  mysql:latest          
+        state: started
+        command: sleep infinity
+        ports:
+        - "8080:3245"
+    - name:  install git
+      yum:
+        name: "{{packagename}}"
+        state: latest
+    - name: http
+      yum: 
+        name: httpd
+        state: latest
+        notify: restart  httpd
+    - name:  loop
+      user:
+        name: "{{item}}"
+        state: present 
+        with_item:
+           - sanjay
+           - ankit
+    - name:  conition
+      command: yum install tree -y 
+      when: ansible_os_family == "Centos"         
+handler: 
+    - name: restart  httpd
+      yum: 
+        name: httpd
+        state: restarted
+

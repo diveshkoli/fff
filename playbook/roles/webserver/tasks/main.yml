@@ -1,0 +1,6 @@
+- name: alpine
+  docker_container:
+    name: alpine
+    image: alpine:latest          
+    state: started
+    command: sleep infinity

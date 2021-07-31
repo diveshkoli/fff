@@ -1,0 +1,6 @@
+---
+- hosts: sanjay
+  user: ansible
+  become: yes
+  roles:
+      - webserver
